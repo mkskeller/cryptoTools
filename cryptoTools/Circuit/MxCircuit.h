@@ -8,6 +8,7 @@
 #include <variant>
 #include "cryptoTools/Circuit/BetaCircuit.h"
 #include<numeric>
+#include<algorithm>
 namespace osuCrypto
 {
 	namespace Mx
