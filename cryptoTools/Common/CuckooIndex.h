@@ -6,10 +6,6 @@
 #include <atomic>
 #include <string.h>
 
-#ifdef ENABLE_SSE
-#define LIBDIVIDE_AVX2
-#endif
-
 #include "libdivide.h"
 
 
@@ -32,7 +28,7 @@ namespace osuCrypto
 
 
 
-#ifdef ENABLE_SSE
+#ifdef ENABLE_SSE_FOR_REAL
         using block256 = __m256i;
         inline block256 my_libdivide_u64_do_vec256(const block256& x)
         {
