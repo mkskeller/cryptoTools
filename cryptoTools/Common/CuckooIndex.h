@@ -28,7 +28,7 @@ namespace osuCrypto
 
 
 
-#ifdef ENABLE_SSE_FOR_REAL
+#ifdef ENABLE_AVX_FOR_REAL
         using block256 = __m256i;
         inline block256 my_libdivide_u64_do_vec256(const block256& x)
         {

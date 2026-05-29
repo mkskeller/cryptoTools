@@ -84,7 +84,7 @@
 #include <immintrin.h>
 #endif
 #ifdef OC_ENABLE_SSE2
-#define OC_ENABLE_SSE2_FOR_REAL
+#define ENABLE_SSE2_FOR_REAL
 #include <emmintrin.h>
 #include <smmintrin.h>
 #endif
@@ -92,6 +92,7 @@
 #include <wmmintrin.h>
 #endif
 #ifdef OC_ENABLE_AVX2
+#define ENABLE_AVX_FOR_REAL
 #define LIBDIVIDE_AVX2
 #endif
 #endif
