@@ -34,7 +34,7 @@
 #endif
 
 // add instrinsics names that intel knows but clang doesn't…
-#ifdef __clang__
+#if defined(__clang__) and defined(__x86_64__)
 #define _mm_cvtsi128_si64x _mm_cvtsi128_si64
 #endif
 

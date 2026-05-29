@@ -64,3 +64,28 @@
 #if (defined(_MSC_VER) || defined(__AVX2__)) && defined(ENABLE_AVX)
 #define OC_ENABLE_AVX2 ON
 #endif
+
+
+#ifdef __aarch64__
+#define SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES
+#define SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES
+#define SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES
+#define SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES
+#define SIMDE_X86_PCLMUL_ENABLE_NATIVE_ALIASES
+#include <simde/simde/x86/clmul.h>
+#include <simde/simde/x86/avx2.h>
+#define OC_ENABLE_AVX2 ON
+#define OC_ENABLE_PCLMUL
+#define OC_ENABLE_SSE2 ON
+#define OC_ENABLE_SSE ON
+#define OC_ENABLE_AVX ON
+#else
+#ifdef OC_ENABLE_SSE2
+#define OC_ENABLE_SSE2_FOR_REAL
+#include <emmintrin.h>
+#include <smmintrin.h>
+#endif
+#ifdef OC_ENABLE_PCLMUL
+#include <wmmintrin.h>
+#endif
+#endif

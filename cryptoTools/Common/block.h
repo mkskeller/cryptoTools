@@ -8,14 +8,6 @@
 #include <string.h>
 #include <cassert>
 
-#ifdef OC_ENABLE_SSE2
-#include <emmintrin.h>
-#include <smmintrin.h>
-#endif
-#ifdef OC_ENABLE_PCLMUL
-#include <wmmintrin.h>
-#endif
-
 #ifdef ENABLE_ARM_AES
 #if defined(__arm__) || defined(__aarch32__) || defined(__arm64__) || defined(__aarch64__) || defined(_M_ARM) || defined(_M_ARM64)
 # if defined(__GNUC__)
@@ -339,7 +331,7 @@ namespace osuCrypto
 			return *this;
 		}
 
-#ifdef OC_ENABLE_SSE2
+#ifdef OC_ENABLE_SSE2_FOR_REAL
 		OC_FORCEINLINE  osuCrypto::block mm_slli_epi64(const std::uint8_t& rhs)const
 		{
 			return _mm_slli_epi64(*this, rhs);
@@ -356,7 +348,7 @@ namespace osuCrypto
 
 		OC_FORCEINLINE  osuCrypto::block slli_epi64(const std::uint8_t& rhs)const
 		{
-#ifdef OC_ENABLE_SSE2
+#ifdef OC_ENABLE_SSE2_FOR_REAL
 			return mm_slli_epi64(rhs);
 #else
 			return cc_slli_epi64(rhs);
@@ -365,7 +357,7 @@ namespace osuCrypto
 
 		OC_FORCEINLINE  block operator>>(const std::uint8_t& rhs)const
 		{
-#ifdef OC_ENABLE_SSE2
+#ifdef OC_ENABLE_SSE2_FOR_REAL
 			return mm_srli_epi64(rhs);
 #else
 			return cc_srli_epi64(rhs);
@@ -378,7 +370,7 @@ namespace osuCrypto
 			return *this;
 		}
 
-#ifdef OC_ENABLE_SSE2
+#ifdef OC_ENABLE_SSE2_FOR_REAL
 		OC_FORCEINLINE  block mm_srli_epi64(const std::uint8_t& rhs) const
 		{
 			return _mm_srli_epi64(*this, rhs);
@@ -517,14 +509,14 @@ namespace osuCrypto
 
 		OC_FORCEINLINE  block srai_epi16(int imm8) const
 		{
-#ifdef OC_ENABLE_SSE2
+#ifdef OC_ENABLE_SSE2_FOR_REAL
 			return mm_srai_epi16(imm8);
 #else
 			return cc_srai_epi16(imm8);
 #endif
 		}
 
-#ifdef OC_ENABLE_SSE2
+#ifdef OC_ENABLE_SSE2_FOR_REAL
 		OC_FORCEINLINE  block mm_srai_epi16(char imm8) const
 		{
 			return _mm_srai_epi16(*this, imm8);

@@ -91,7 +91,7 @@ std::string bits(T x, u64 width)
 void tests_cryptoTools::block_operation_test()
 {
 
-#ifdef OC_ENABLE_SSE2
+#ifdef OC_ENABLE_SSE2_FOR_REAL
 
 
 	for (u64 i = 2; i < 100; ++i)
