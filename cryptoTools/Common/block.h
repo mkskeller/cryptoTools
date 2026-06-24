@@ -52,7 +52,6 @@ namespace osuCrypto
 #endif
 
 		block() = default;
-		block(const block&) = default;
 #ifdef OC_ENABLE_SSE2
 		block(uint64_t x1, uint64_t x0)
 		{

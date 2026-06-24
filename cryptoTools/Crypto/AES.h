@@ -33,7 +33,6 @@ namespace osuCrypto {
 			// Default constructor leave the class in an invalid state
 			// until setKey(...) is called.
 			AES() = default;
-			AES(const AES&) = default;
 
 			// Constructor to initialize the class with the given key
 			AES(const block& userKey) { setKey(userKey); }
