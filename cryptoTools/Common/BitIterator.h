@@ -20,7 +20,7 @@ namespace osuCrypto
 
         // Construct a reference to the bit in the provided byte offset by the shift and mask.
         // Shift should be less than 8. and the mask should equal 1 << shift.
-        BitReference(u8* byte, u8 mask, u8 shift)
+        BitReference(u8* byte, u8, u8 shift)
             : BitReference(byte, shift) {}
 
         // Copy the underlying values of the rhs to the lhs.

@@ -318,13 +318,11 @@ namespace osuCrypto
 		}
 
 
-		[[deprecated("use slli_epi64 instead")]]
 		OC_FORCEINLINE  osuCrypto::block operator<<(const std::uint8_t& rhs)const
 		{
 			return slli_epi64(rhs);
 		}
 
-		[[deprecated("use slli_epi64 instead")]]
 		OC_FORCEINLINE  osuCrypto::block& operator<<=(const std::uint8_t& rhs)
 		{
 			*this = slli_epi64(rhs);
@@ -384,13 +382,11 @@ namespace osuCrypto
 			return ret;;
 		}
 
-		[[deprecated("use add_epi64 instead")]]
 		OC_FORCEINLINE  osuCrypto::block operator+(const osuCrypto::block& rhs)const
 		{
 			return add_epi64(rhs);
 		}
 
-		[[deprecated("use add_epi64 instead")]]
 		OC_FORCEINLINE  osuCrypto::block& operator+=(const osuCrypto::block& rhs)
 		{
 			*this = add_epi64(rhs);

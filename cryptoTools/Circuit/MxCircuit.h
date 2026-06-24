@@ -280,6 +280,7 @@ namespace osuCrypto
 					throw std::runtime_error("error: reading an uninitilized value. " LOCATION);
 				auto addr = b.mAddress.gate();
 				auto off = b.mAddress.offset();
+				(void) addr, (void) off;
 				assert(addr < mGates.size() &&
 					off < mGates[addr].mNumOutputs);
 
