@@ -52,7 +52,10 @@ namespace osuCrypto
 #endif
 
 		OC_CUDA_CALLABLE block() = default;
+
+#ifdef __CUDACC__
 		OC_CUDA_CALLABLE block(const block&) = default;
+#endif
 
 #ifdef OC_ENABLE_SSE2
 		block(uint64_t x1, uint64_t x0)
@@ -441,7 +444,6 @@ namespace osuCrypto
 		}
 
 
-		[[deprecated("use srli_epi64 instead")]]
 		OC_CUDA_CALLABLE OC_FORCEINLINE  block operator>>(const std::uint8_t& rhs)const
 		{
 			return srli_epi64(rhs);
