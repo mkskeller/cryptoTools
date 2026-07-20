@@ -734,7 +734,7 @@ namespace osuCrypto
 				};
 
 			if (quotient.size() != dividend.size())
-				throw std::runtime_error(LOCATION);
+				throw osuCrypto::maybe_runtime_error(LOCATION);
 
 			if (it == IntType::TwosComplement)
 			{

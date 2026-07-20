@@ -70,7 +70,7 @@ namespace osuCrypto
         void reshape(size_type rows, size_type columns)
         {
             if (rows * columns != size())
-                throw std::runtime_error(LOCATION);
+                throw osuCrypto::maybe_runtime_error(LOCATION);
 
             mView = span<T>(mView.data(), rows * columns);
             mStride = columns;
@@ -91,7 +91,7 @@ namespace osuCrypto
         pointer data(u64 rowIdx) const
         {
 #ifndef NDEBUG
-            if (rowIdx >= rows()) throw std::runtime_error(LOCATION);
+            if (rowIdx >= rows()) throw osuCrypto::maybe_runtime_error(LOCATION);
 #endif
             return mView.data() + rowIdx * stride();
         };
@@ -122,7 +122,7 @@ namespace osuCrypto
         const span<T> operator[](size_type rowIdx) const
         {
 #ifndef NDEBUG
-            if (rowIdx >= rows()) throw std::runtime_error(LOCATION);
+            if (rowIdx >= rows()) throw osuCrypto::maybe_runtime_error(LOCATION);
 #endif
 
             return span<T>(mView.data() + rowIdx * stride(), stride());
@@ -142,7 +142,7 @@ namespace osuCrypto
         MatrixView<T> submtx(u64 beginRow, u64 rowCount)
         {
             if(beginRow >= rows() || rowCount + beginRow > rows())
-				throw std::runtime_error(LOCATION);
+				throw osuCrypto::maybe_runtime_error(LOCATION);
 			return MatrixView<T>(data(beginRow), rowCount, stride());
         }
 

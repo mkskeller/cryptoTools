@@ -271,13 +271,13 @@ namespace osuCrypto
 			//		return idx;
 			//	}
 			//	else
-			//		throw std::runtime_error("internal error: bit has already been mapped. " LOCATION);
+			//		throw osuCrypto::maybe_runtime_error("internal error: bit has already been mapped. " LOCATION);
 			//}
 
 			Address getBitMap(const Bit& b)
 			{
 				if (b.mAddress.hasValue() == false)
-					throw std::runtime_error("error: reading an uninitilized value. " LOCATION);
+					throw osuCrypto::maybe_runtime_error("error: reading an uninitilized value. " LOCATION);
 #ifndef NDEBUG
 				auto addr = b.mAddress.gate();
 				auto off = b.mAddress.offset();
@@ -344,7 +344,7 @@ namespace osuCrypto
 			Bit addGate(OpType t, const Bit& a, const Bit& b)
 			{
 				//if (a.mAddress == b.mAddress && a.mAddress.hasValue())
-				//	throw std::runtime_error("illegal to provide the same bit. " LOCATION);
+				//	throw osuCrypto::maybe_runtime_error("illegal to provide the same bit. " LOCATION);
 
 				Bit ret;
 				ret.mCir = this;
@@ -379,7 +379,7 @@ namespace osuCrypto
 			//{
 			//	//auto iter = mBitMap.find(&a);
 			//	if (a.mAddress == ~0ull)
-			//		throw std::runtime_error("uninitialized bit was moved. " LOCATION);
+			//		throw osuCrypto::maybe_runtime_error("uninitialized bit was moved. " LOCATION);
 
 			//	if (d.mAddress != ~0ull)
 			//		remove(d);
@@ -397,7 +397,7 @@ namespace osuCrypto
 			//{
 			//	//auto iter = mBitMap.find(&a);
 			//	if (a.mAddress == ~0ull)
-			//		throw std::runtime_error("uninitialized bit was removed. " LOCATION);
+			//		throw osuCrypto::maybe_runtime_error("uninitialized bit was removed. " LOCATION);
 			//	a.mAddress = ~0ull;
 			//	//mBitMap.erase(iter);
 			//}
@@ -423,12 +423,12 @@ namespace osuCrypto
 			{
 
 				if (mInputs.size() == 0)
-					throw std::runtime_error("MxCircuit::evaluate(...), zero inputs to cirucit. " LOCATION);
+					throw osuCrypto::maybe_runtime_error("MxCircuit::evaluate(...), zero inputs to cirucit. " LOCATION);
 				if (mOutputs.size() == 0)
-					throw std::runtime_error("MxCircuit::evaluate(...), zero output from cirucit. " LOCATION);
+					throw osuCrypto::maybe_runtime_error("MxCircuit::evaluate(...), zero output from cirucit. " LOCATION);
 
 				if (in.size() != mInputs.size())
-					throw std::runtime_error("MxCircuit::evaluate(...), number of inputs provided is not correct. " LOCATION);
+					throw osuCrypto::maybe_runtime_error("MxCircuit::evaluate(...), number of inputs provided is not correct. " LOCATION);
 				out.resize(mOutputs.size());
 
 				std::vector<u64> map(mGates.size(), ~0ull);
@@ -471,7 +471,7 @@ namespace osuCrypto
 						auto& x = in[idx];
 						if (x.size() != gate.mNumOutputs) {
 							std::cout << "x.size() id " << x.size() << " " << idx << " gate.mNumOutputs " << gate.mNumOutputs << std::endl;
-							throw std::runtime_error("MxCircuit::evaluate(...), the " + std::to_string(idx) + "'th input provided is not the correct size. " LOCATION);
+							throw osuCrypto::maybe_runtime_error("MxCircuit::evaluate(...), the " + std::to_string(idx) + "'th input provided is not the correct size. " LOCATION);
 						}
 
 						for (u64 j = 0; j < x.size(); ++j)
@@ -515,7 +515,7 @@ namespace osuCrypto
 						break;
 					}
 					default:
-						throw std::runtime_error("MxCircuit::evaluate(...), gate type not implemented. " LOCATION);
+						throw osuCrypto::maybe_runtime_error("MxCircuit::evaluate(...), gate type not implemented. " LOCATION);
 					}
 				}
 

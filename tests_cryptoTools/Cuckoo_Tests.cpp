@@ -363,7 +363,7 @@ namespace tests_cryptoTools
     //					std::cout << "CuckooIndex "; c.print(); std::cout << std::endl;
     //					std::cout << "CuckooSimple "; cc.print(); std::cout << std::endl;
 
-    //					throw std::runtime_error(LOCATION);
+    //					throw osuCrypto::maybe_runtime_error(LOCATION);
     //				}
     //			}
     //		}

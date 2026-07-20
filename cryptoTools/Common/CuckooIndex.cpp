@@ -436,10 +436,10 @@ namespace osuCrypto
     bool CuckooIndex<Mode>::operator==(const CuckooIndex& cmp) const
     {
         if (mBins.size() != cmp.mBins.size())
-            throw std::runtime_error("");
+            throw osuCrypto::maybe_runtime_error("");
 
         if (mStash.size() != cmp.mStash.size())
-            throw std::runtime_error("");
+            throw osuCrypto::maybe_runtime_error("");
 
 
 
@@ -589,7 +589,7 @@ namespace osuCrypto
             return CuckooParam{ 0, e, 2, n };
         }
 
-        throw std::runtime_error(LOCATION);
+        throw osuCrypto::maybe_runtime_error(LOCATION);
 
     }
 
@@ -605,7 +605,7 @@ namespace osuCrypto
         mParams = params;
 
         if (CUCKOOINDEX_MAX_HASH_FUNCTION_COUNT < params.mNumHashes)
-            throw std::runtime_error("parameters exceeded the maximum number of hash functions are are supported. see getHash(...); " LOCATION);
+            throw osuCrypto::maybe_runtime_error("parameters exceeded the maximum number of hash functions are are supported. see getHash(...); " LOCATION);
 
         mVals.resize(mParams.mN, AllOneBlock);
         mLocations.resize(mParams.mN, params.mNumHashes, AllocType::Uninitialized);
@@ -683,7 +683,7 @@ namespace osuCrypto
         if (neq(mVals[startIdx], AllOneBlock))
         {
             std::cout << IoStream::lock << "cuckoo index " << startIdx << " already inserted" << std::endl << IoStream::unlock;
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
         }
 
 
@@ -722,7 +722,7 @@ namespace osuCrypto
     //    {
     //#ifndef NDEBUG
     //        if (inputIdxs.size() != hashs.size())
-    //            throw std::runtime_error("" LOCATION);
+    //            throw osuCrypto::maybe_runtime_error("" LOCATION);
     //#endif
     //        ...;
     //        insert(inputIdxs.size(), inputIdxs.data(), hashs.data());
@@ -1085,7 +1085,7 @@ namespace osuCrypto
     {
 #ifndef NDEBUG
         if (hashes.size() != idxs.size())
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
 #endif
 
         for (u64 i = 0; i < hashes.size(); ++i)
@@ -1168,7 +1168,7 @@ namespace osuCrypto
     //        }
     //        else
     //        {
-    //            throw std::runtime_error("not implemented");
+    //            throw osuCrypto::maybe_runtime_error("not implemented");
     //        }
     //    }
 
@@ -1189,7 +1189,7 @@ namespace osuCrypto
             //hash = expand(hash, mMods, mNumBinMask);
 
             if (neq(hash, mVals[i]))
-                throw std::runtime_error(LOCATION);
+                throw osuCrypto::maybe_runtime_error(LOCATION);
 
             if (neq(mVals[i], AllOneBlock))
             {
@@ -1208,7 +1208,7 @@ namespace osuCrypto
                 }
 
                 if (matches != 1)
-                    throw std::runtime_error(LOCATION);
+                    throw osuCrypto::maybe_runtime_error(LOCATION);
             }
         }
 
@@ -1220,7 +1220,7 @@ namespace osuCrypto
         }
 
         if (nonEmptyCount != insertCount)
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
     }
 
     template<CuckooTypes Mode>

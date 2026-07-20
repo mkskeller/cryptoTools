@@ -873,7 +873,7 @@ namespace osuCrypto
 		u64 sSize = sum.mWires.size();
 
 		if (!areDistint(cd, a2, sum) || !areDistint(cd, a1, sum))
-			throw std::runtime_error("must be distinct" LOCATION);
+			throw osuCrypto::maybe_runtime_error("must be distinct" LOCATION);
 
 
 		// This is a Parallel Prefix Adder where we use generate & propagate
@@ -1108,7 +1108,7 @@ namespace osuCrypto
 		Optimized op)
 	{
 		if (1 != msb.size())
-			throw std::runtime_error("msb must be one bit" LOCATION);
+			throw osuCrypto::maybe_runtime_error("msb must be one bit" LOCATION);
 
 		BetaBundle sum(bitIdx);
 		sum.push_back(msb.back());
@@ -1129,7 +1129,7 @@ namespace osuCrypto
 		AdderType at)
 	{
 		if (!areDistint(cd, a2, out) || !areDistint(cd, a1, out))
-			throw std::runtime_error("must be distinct " LOCATION);
+			throw osuCrypto::maybe_runtime_error("must be distinct " LOCATION);
 
 		// sum is computed as a1[i] ^ a2[i] ^ carry[i-1]
 		// carry[i] is computed as
@@ -1265,7 +1265,7 @@ namespace osuCrypto
 	{
 
 		if (c.mWires.size() > a.mWires.size() + b.mWires.size())
-			throw std::runtime_error(LOCATION);
+			throw osuCrypto::maybe_runtime_error(LOCATION);
 
 		if (a.size() >= b.size())
 		{
@@ -1473,7 +1473,7 @@ namespace osuCrypto
 	{
 
 		if (quotient.mWires.size() != dividend.mWires.size())
-			throw std::runtime_error(LOCATION);
+			throw osuCrypto::maybe_runtime_error(LOCATION);
 
 		if (it == IntType::TwosComplement)
 		{
@@ -1723,8 +1723,8 @@ namespace osuCrypto
 		const BetaBundle& a2,
 		const BetaBundle& out)
 	{
-		if (a1.mWires.size() != a2.mWires.size())throw std::runtime_error(LOCATION);
-		if (out.mWires.size() > a1.mWires.size())throw std::runtime_error(LOCATION);
+		if (a1.mWires.size() != a2.mWires.size())throw osuCrypto::maybe_runtime_error(LOCATION);
+		if (out.mWires.size() > a1.mWires.size())throw osuCrypto::maybe_runtime_error(LOCATION);
 
 		for (u64 j = 0; j < out.mWires.size(); ++j)
 		{
@@ -1739,8 +1739,8 @@ namespace osuCrypto
 
 	void BetaLibrary::bitwiseOr_build(BetaCircuit& cd, const BetaBundle& a1, const BetaBundle& a2, const BetaBundle& out)
 	{
-		if (a1.mWires.size() != a2.mWires.size())throw std::runtime_error(LOCATION);
-		if (out.mWires.size() > a1.mWires.size())throw std::runtime_error(LOCATION);
+		if (a1.mWires.size() != a2.mWires.size())throw osuCrypto::maybe_runtime_error(LOCATION);
+		if (out.mWires.size() > a1.mWires.size())throw osuCrypto::maybe_runtime_error(LOCATION);
 
 		for (u64 j = 0; j < out.mWires.size(); ++j)
 		{
@@ -1754,8 +1754,8 @@ namespace osuCrypto
 
 	void BetaLibrary::bitwiseXor_build(BetaCircuit& cd, const BetaBundle& a1, const BetaBundle& a2, const BetaBundle& out)
 	{
-		if (a1.mWires.size() != a2.mWires.size())throw std::runtime_error(LOCATION);
-		if (out.mWires.size() > a1.mWires.size())throw std::runtime_error(LOCATION);
+		if (a1.mWires.size() != a2.mWires.size())throw osuCrypto::maybe_runtime_error(LOCATION);
+		if (out.mWires.size() > a1.mWires.size())throw osuCrypto::maybe_runtime_error(LOCATION);
 
 		for (u64 j = 0; j < out.mWires.size(); ++j)
 		{

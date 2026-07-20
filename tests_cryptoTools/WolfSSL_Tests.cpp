@@ -31,7 +31,7 @@ using namespace oc;
 #ifdef ENABLE_WOLFSSL
 
 #define SVR_COMMAND_SIZE 256
-#define throwEC(ec) {lout << "throwing " << ec.message() << " @ " <<LOCATION << std::endl; throw std::runtime_error(ec.message() + LOCATION);}
+#define throwEC(ec) {lout << "throwing " << ec.message() << " @ " <<LOCATION << std::endl; throw osuCrypto::maybe_runtime_error(ec.message() + LOCATION);}
 
 int client()
 {
@@ -53,7 +53,7 @@ int client()
     if (ec)
     {
         lout << "failed to load cert" << std::endl;
-        throw std::runtime_error(ec.message());
+        throw osuCrypto::maybe_runtime_error(ec.message());
     }
 
     boost::asio::ip::tcp::resolver resolver(ios.mIoService);
@@ -112,7 +112,7 @@ int client()
         if (memcmp(reply.data(), msg.data(), sendSz) != 0)
         {
             std::cout << "bad echo message " << std::endl;
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
         }
     }
 

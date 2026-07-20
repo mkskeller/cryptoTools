@@ -58,10 +58,10 @@ namespace osuCrypto
         mInputs.push_back(in);
 
         if (mGates.size())
-            throw std::runtime_error("inputs must be defined before gates are added. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("inputs must be defined before gates are added. " LOCATION);
 
         if (mOutputs.size())
-            throw std::runtime_error("inputs must be defined before outputs are added. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("inputs must be defined before outputs are added. " LOCATION);
     }
 
 
@@ -76,7 +76,7 @@ namespace osuCrypto
         mOutputs.push_back(out);
 
         if (mGates.size())
-            throw std::runtime_error("outputs must be defined before gates are added. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("outputs must be defined before gates are added. " LOCATION);
     }
 
     void BetaCircuit::addConstBundle(BetaBundle& in, const BitVector& val)
@@ -114,7 +114,7 @@ namespace osuCrypto
                 (s & 12) >> 2); // bits (2,3) -> bits (0,1)
         }
         else
-            throw std::runtime_error("");
+            throw osuCrypto::maybe_runtime_error("");
     }
 
     void BetaCircuit::addGate(
@@ -129,19 +129,19 @@ namespace osuCrypto
             gt == GateType::nb ||
             gt == GateType::One ||
             gt == GateType::Zero)
-            throw std::runtime_error("");
+            throw osuCrypto::maybe_runtime_error("");
 
         if (aIdx >= mWireCount || mWireFlags[aIdx] == BetaWireFlag::Uninitialized)
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
 
         if (bIdx >= mWireCount || mWireFlags[bIdx] == BetaWireFlag::Uninitialized)
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
 
         if (out >= mWireCount)
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
 
         //if (aIdx == bIdx)
-            //throw std::runtime_error(LOCATION);
+            //throw osuCrypto::maybe_runtime_error(LOCATION);
         //std::cout << "add "<<mGates.size() << ": " << aIdx <<" "<< bIdx <<" " << gateToString(gt) << " " << out << std::endl;
 
         auto
@@ -193,7 +193,7 @@ namespace osuCrypto
                     addConst(out, 1);
                     break;
                 default:
-                    throw std::runtime_error(LOCATION);
+                    throw osuCrypto::maybe_runtime_error(LOCATION);
                     break;
                 }
             }
@@ -233,7 +233,7 @@ namespace osuCrypto
             mWireFlags[wire] = BetaWireFlag::Wire;
             break;
         default:
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
             break;
         }
     }
@@ -294,7 +294,7 @@ namespace osuCrypto
     u8 BetaCircuit::constVal(BetaWire wire)
     {
         if (mWireFlags[wire] == BetaWireFlag::Wire)
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
 
         return mWireFlags[wire] == BetaWireFlag::One ? 1 : 0;
     }
@@ -374,7 +374,7 @@ namespace osuCrypto
 
         if (static_cast<u64>(input.size()) != mInputs.size())
         {
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
         }
 
         for (u64 i = 0; i < static_cast<u64>(input.size()); ++i)
@@ -385,7 +385,7 @@ namespace osuCrypto
                     << ". Expecting " << mInputs.size() << " bits but evaluate called with "
                     << input[i].size() << " bits." << std::endl;
 
-                throw std::runtime_error(LOCATION);
+                throw osuCrypto::maybe_runtime_error(LOCATION);
             }
             for (u64 j = 0; j < input[i].size(); ++j)
             {
@@ -451,7 +451,7 @@ namespace osuCrypto
                 }
                 else
                 {
-                    throw std::runtime_error(LOCATION);
+                    throw osuCrypto::maybe_runtime_error(LOCATION);
                 }
             }
             else
@@ -499,14 +499,14 @@ namespace osuCrypto
 
         if (static_cast<u64>(output.size()) != mOutputs.size())
         {
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
         }
 
         for (u64 i = 0; i < static_cast<u64>(output.size()); ++i)
         {
             auto& outi = output[i];
             if (outi.size() != mOutputs[i].mWires.size())
-                throw std::runtime_error(LOCATION);
+                throw osuCrypto::maybe_runtime_error(LOCATION);
 
             for (u64 j = 0; j < output[i].size(); ++j)
             {
@@ -553,8 +553,8 @@ namespace osuCrypto
 
     //for (u64 i = 0; i < mGates.size(); ++i)
     //{
-    //	if (mGates[i].mType == GateType::a) throw std::runtime_error(LOCATION);
-    //	if (mGates[i].mType == GateType::na) throw std::runtime_error(LOCATION);
+    //	if (mGates[i].mType == GateType::a) throw osuCrypto::maybe_runtime_error(LOCATION);
+    //	if (mGates[i].mType == GateType::na) throw osuCrypto::maybe_runtime_error(LOCATION);
     //	incrementOutDegree(i);
     //}
 
@@ -581,8 +581,8 @@ namespace osuCrypto
     //		if (type == Gate)
     //		{
     //			auto& gate = mGates[idx];
-    //			if (gate.mType == GateType::a) throw std::runtime_error(LOCATION);
-    //			if (gate.mType == GateType::na) throw std::runtime_error(LOCATION);
+    //			if (gate.mType == GateType::a) throw osuCrypto::maybe_runtime_error(LOCATION);
+    //			if (gate.mType == GateType::na) throw osuCrypto::maybe_runtime_error(LOCATION);
 
     //			//std::cout << std::setw(depth+1) << " " << gateToString(gate.mType)  << idx<< " (" /*<< depth*/<< std::endl;
 
@@ -608,7 +608,7 @@ namespace osuCrypto
     //		}
     //		else
     //		{
-    //			if (idx >= inputCount) throw std::runtime_error(LOCATION);
+    //			if (idx >= inputCount) throw osuCrypto::maybe_runtime_error(LOCATION);
     //			//std::cout << std::setw(depth+1) << " "<<"in " << idx << "  ("<< depth << ")"<< std::endl;
 
     //		}
@@ -714,7 +714,7 @@ namespace osuCrypto
             curNode.mIdx = i;
             curNode.mDepth = 0;
             if (curNode.mGate.mInput[0] == curNode.mGate.mInput[1] && curNode.mGate.mType != GateType::a)
-                throw std::runtime_error("Gate has the same input for both inputs. Not allowed. " LOCATION);
+                throw osuCrypto::maybe_runtime_error("Gate has the same input for both inputs. Not allowed. " LOCATION);
 
             for (u64 in = 0; in < 2; ++in)
             {
@@ -726,7 +726,7 @@ namespace osuCrypto
                 //for (auto& oo : inNode.mOutputs)
                 //{
                 //    if (oo->mIdx == curNode.mIdx)
-                //        throw std::runtime_error(LOCATION);
+                //        throw osuCrypto::maybe_runtime_error(LOCATION);
                 //}
 
                 inNode.mOutputs.emplace_back(&curNode);
@@ -772,7 +772,7 @@ namespace osuCrypto
                     return static_cast<u32>(node.mWire);
                 }
 
-                throw std::runtime_error(LOCATION);
+                throw osuCrypto::maybe_runtime_error(LOCATION);
             };
 
         auto getInWire = [&](Node& node, u64 i) -> u32
@@ -784,11 +784,11 @@ namespace osuCrypto
                 if (iter == depList.end() ||
                     (node.mGate.mType != GateType::a &&
                         std::find(iter + 1, depList.end(), &node) != depList.end()))
-                    throw std::runtime_error("input value appears more than once... " LOCATION);
+                    throw osuCrypto::maybe_runtime_error("input value appears more than once... " LOCATION);
 
                 auto wire = node.mInput[i]->mWire;
                 if (wire < 0)
-                    throw std::runtime_error("wire is uninit... " LOCATION);
+                    throw osuCrypto::maybe_runtime_error("wire is uninit... " LOCATION);
 
 
                 if (depList.size() == 1 && node.mInput[i]->mFixedWireValue == false)
@@ -929,7 +929,7 @@ namespace osuCrypto
         }
 
         if (mWireFlags.size() != mWireCount)
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
 
         j["wire-flags"] = mWireFlags;
 
@@ -959,10 +959,10 @@ namespace osuCrypto
         auto& format = j["format"];
 
         if (format["name"] != "BetaCircuit")
-            throw std::runtime_error("wrong format name");
+            throw osuCrypto::maybe_runtime_error("wrong format name");
 
         if (format["version"] != 1)
-            throw std::runtime_error("wrong format version");
+            throw osuCrypto::maybe_runtime_error("wrong format version");
 
         auto& inputs = j["inputs"];
         for (u64 i = 0; i < inputs.size(); ++i)
@@ -973,10 +973,10 @@ namespace osuCrypto
             for (u64 j = 0; j < input.size(); ++j)
             {
                 if (inputs[i][j].is_number_integer() == false)
-                    throw std::runtime_error("input vals must be integer");
+                    throw osuCrypto::maybe_runtime_error("input vals must be integer");
 
                 if (inputs[i][j].get<i32>() != input.mWires[j])
-                    throw std::runtime_error("input wire index must be monotimicly increasing by 1");
+                    throw osuCrypto::maybe_runtime_error("input wire index must be monotimicly increasing by 1");
             }
         }
 
@@ -989,18 +989,18 @@ namespace osuCrypto
             for (u64 j = 0; j < output.size(); ++j)
             {
                 if (outputs[i][j].is_number_integer() == false)
-                    throw std::runtime_error("output vals must be integer");
+                    throw osuCrypto::maybe_runtime_error("output vals must be integer");
 
                 auto act = outputs[i][j].get<i32>();
                 auto exp = output.mWires[j];
                 if (act != exp)
-                    throw std::runtime_error("output wire index must be monotimicly increasing by 1");
+                    throw osuCrypto::maybe_runtime_error("output wire index must be monotimicly increasing by 1");
             }
         }
 
         i32 wireCount = j["wire-count"];
         if (wireCount < mWireCount)
-            throw std::runtime_error("bad wire count");
+            throw osuCrypto::maybe_runtime_error("bad wire count");
 
         BetaBundle temp(wireCount - mWireCount);
         addTempWireBundle(temp);
@@ -1011,7 +1011,7 @@ namespace osuCrypto
         {
             std::array<u32, 4> vals = gates[i];
             if (vals[0] > (u32)GateType::One)
-                throw std::runtime_error("bad gate type");
+                throw osuCrypto::maybe_runtime_error("bad gate type");
 
             GateType gt = (GateType)vals[0];
 
@@ -1019,13 +1019,13 @@ namespace osuCrypto
             //    (gt != GateType::a &&
             //        gt != GateType::na &&
             //        mWireFlags[vals[2]] == BetaWireFlag::Uninitialized))
-            //    throw std::runtime_error(LOCATION);
+            //    throw osuCrypto::maybe_runtime_error(LOCATION);
 
             if (vals[1] == vals[2])
-                throw std::runtime_error(LOCATION);
+                throw osuCrypto::maybe_runtime_error(LOCATION);
 
             if (vals[3] >= mWireCount)
-                throw std::runtime_error(LOCATION);
+                throw osuCrypto::maybe_runtime_error(LOCATION);
 
             mGates.emplace_back(vals[1], vals[2], gt, vals[3]);
 
@@ -1036,7 +1036,7 @@ namespace osuCrypto
         if (flags.size() != mWireCount)
         {
             std::cout << "bad wire flag count. act: " << flags.size() << ", exp: " << mWireCount << std::endl;
-            throw std::runtime_error("bad wire flags");
+            throw osuCrypto::maybe_runtime_error("bad wire flags");
         }
         mWireFlags.resize(mWireCount);
 
@@ -1080,7 +1080,7 @@ namespace osuCrypto
         {
             std::cout << "hash values do not match, file:" << fileHashVal << ", cur: " << hashVal << std::endl;
 
-            throw std::runtime_error("hash values do not match");
+            throw osuCrypto::maybe_runtime_error("hash values do not match");
         }
 
     }
@@ -1131,7 +1131,7 @@ namespace osuCrypto
         write(mGates.data(), mGates.size(), out);
 
         if (mWireFlags.size() != mWireCount)
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
 
         write(mWireFlags.data(), mWireFlags.size(), out);
 
@@ -1182,12 +1182,12 @@ namespace osuCrypto
         std::string format;
         read(format, in);
         if (format != "BetaCircuit")
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
 
         u64 version;
         read(version, in);
         if (version != 1)
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
 
         u64 count;
         read(count, in);
@@ -1251,7 +1251,7 @@ namespace osuCrypto
         auto hashVal = hash();
         if (neq(fileHashValue, hashVal))
         {
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
         }
     }
 
@@ -1271,7 +1271,7 @@ namespace osuCrypto
     void BetaCircuit::writeBristol(std::ostream& out)const
     {
         if (mInputs.size() != 2)
-            throw std::runtime_error("bristol only supports two inputs. Merge into for a single party...");
+            throw osuCrypto::maybe_runtime_error("bristol only supports two inputs. Merge into for a single party...");
 
 
         auto inputCount = (mInputs[0].size() + mInputs[1].size());
@@ -1355,7 +1355,7 @@ namespace osuCrypto
             }
             default:
                 std::cout << gateToString(mGates[i].mType) << " not supported" << std::endl;
-                throw std::runtime_error("Currently only supports {AND, XOR, NXOR, NOT, Copy} gates. " LOCATION);
+                throw osuCrypto::maybe_runtime_error("Currently only supports {AND, XOR, NXOR, NOT, Copy} gates. " LOCATION);
                 break;
             }
         }

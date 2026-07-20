@@ -125,7 +125,7 @@ void BetaCircuit_int_Adder_Test()
 			std::cout << "exp: " << cExp << std::endl;
 			std::cout << "act: " << output1[0] << std::endl;
 
-			throw std::runtime_error(LOCATION);
+			throw osuCrypto::maybe_runtime_error(LOCATION);
 		}
 
 
@@ -142,7 +142,7 @@ void BetaCircuit_int_Adder_Test()
 		{
 			std::cout << "exp: " << output1.back().back() << std::endl;
 			std::cout << "act: " << output2.back().back() << std::endl;
-			throw std::runtime_error(LOCATION);
+			throw osuCrypto::maybe_runtime_error(LOCATION);
 		}
 
 		if (output2.back() != output5.back())
@@ -152,13 +152,13 @@ void BetaCircuit_int_Adder_Test()
 		{
 			std::cout << "exp: " << output1.back().back() << std::endl;
 			std::cout << "act: " << output3.back().back() << std::endl;
-			throw std::runtime_error(LOCATION);
+			throw osuCrypto::maybe_runtime_error(LOCATION);
 		}
 		if (output4.back().back() != output1.back().back())
 		{
 			std::cout << "exp: " << output1.back().back() << std::endl;
 			std::cout << "act: " << output4.back().back() << std::endl;
-			throw std::runtime_error(LOCATION);
+			throw osuCrypto::maybe_runtime_error(LOCATION);
 		}
 	}
 }
@@ -255,9 +255,9 @@ void compare(oc::BetaCircuit& c0, oc::BetaCircuit& c1)
 	u64 numOutputs = c0.mOutputs.size();
 
 	if (numInputs != c1.mInputs.size())
-		throw std::runtime_error(LOCATION);
+		throw osuCrypto::maybe_runtime_error(LOCATION);
 	if (numOutputs != c1.mOutputs.size())
-		throw std::runtime_error(LOCATION);
+		throw osuCrypto::maybe_runtime_error(LOCATION);
 
 	std::vector<BitVector> inputs(numInputs);
 	std::vector<BitVector> output0(numOutputs), output1(numOutputs);
@@ -1498,13 +1498,13 @@ void BetaCircuit_json_Tests()
 	in.open(filename, std::ios::in | std::ios::binary);
 
 	if (in.is_open() == false)
-		throw std::runtime_error(LOCATION);
+		throw osuCrypto::maybe_runtime_error(LOCATION);
 
 	cir2.readJson(in);
 
 	if (cir != cir2)
 	{
-		throw std::runtime_error(LOCATION);
+		throw osuCrypto::maybe_runtime_error(LOCATION);
 	}
 #else
 	throw UnitTestSkipped("USE_JSON not defined.");
@@ -1531,13 +1531,13 @@ void BetaCircuit_bin_Tests()
 	in.open(filename, std::ios::in | std::ios::binary);
 
 	if (in.is_open() == false)
-		throw std::runtime_error(LOCATION);
+		throw osuCrypto::maybe_runtime_error(LOCATION);
 
 	cir2.readBin(in);
 
 	if (cir != cir2)
 	{
-		throw std::runtime_error(LOCATION);
+		throw osuCrypto::maybe_runtime_error(LOCATION);
 	}
 
 }

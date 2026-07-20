@@ -1117,7 +1117,7 @@ namespace osuCrypto {
         if (mBase->mSession)
             return mBase->mSession;
         else
-            throw std::runtime_error("no session. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("no session. " LOCATION);
     }
 
 

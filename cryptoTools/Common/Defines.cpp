@@ -37,4 +37,11 @@ namespace osuCrypto
         memcpy(&blk, &ret, sizeof(block));
         return blk;
     }
+
+    std::runtime_error maybe_runtime_error(const std::string& error)
+    {
+        std::cerr << error << std::endl;
+//        std::terminate();
+        return std::runtime_error(error);
+    }
 }

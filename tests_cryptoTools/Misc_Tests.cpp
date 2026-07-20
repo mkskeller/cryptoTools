@@ -22,7 +22,7 @@ namespace tests_cryptoTools
         for (auto i = 0; i < 128; ++i)
         {
             if ((bb[i] > 0) != gold[i])
-                throw std::runtime_error("");
+                throw osuCrypto::maybe_runtime_error("");
 
             if ((bb[i] > 0) != gold[i])
                 throw UnitTestFail();
@@ -116,7 +116,7 @@ namespace tests_cryptoTools
         for (u64 i = 0; i < 128 - offset; ++i)
         {
             if (bb[i + offset] != c[i])
-                throw std::runtime_error("");
+                throw osuCrypto::maybe_runtime_error("");
 
         }
     }
@@ -136,16 +136,16 @@ namespace tests_cryptoTools
         bb.resize(size3, 1);
 
         for (u64 i{ 0 }; i < size0; ++i)
-            if (bb[i])throw std::runtime_error(LOCATION);
+            if (bb[i])throw osuCrypto::maybe_runtime_error(LOCATION);
 
         for (u64 i{ size0 }; i < size1; ++i)
-            if (!bb[i])throw std::runtime_error(LOCATION);
+            if (!bb[i])throw osuCrypto::maybe_runtime_error(LOCATION);
 
         for (u64 i{ size1 }; i < size2; ++i)
-            if (bb[i])throw std::runtime_error(LOCATION);
+            if (bb[i])throw osuCrypto::maybe_runtime_error(LOCATION);
 
         for (u64 i{ size2 }; i < size3; ++i)
-            if (!bb[i])throw std::runtime_error(LOCATION);
+            if (!bb[i])throw osuCrypto::maybe_runtime_error(LOCATION);
 
 
     }

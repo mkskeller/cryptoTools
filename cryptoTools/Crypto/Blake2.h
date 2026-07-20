@@ -73,7 +73,7 @@ namespace osuCrypto {
 			Final(T& out)
 		{
 			if (sizeof(T) != outputLength())
-				throw std::runtime_error(LOCATION);
+				throw osuCrypto::maybe_runtime_error(LOCATION);
 			Final((u8*)&out);
 		}
 

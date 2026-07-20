@@ -169,7 +169,7 @@ namespace osuCrypto
         }
         else
         {
-            throw std::runtime_error("Context not init correctly.");
+            throw osuCrypto::maybe_runtime_error("Context not init correctly.");
         }
     }
 
@@ -416,7 +416,7 @@ namespace osuCrypto
         auto ptr = wolfSSL_get_peer_certificate(mSSL);
         if (ptr == nullptr)
         {
-            throw std::runtime_error("please compile wolfssl with KEEP_PEER_CERT defined. For example `./configure --enable-all; make`");
+            throw osuCrypto::maybe_runtime_error("please compile wolfssl with KEEP_PEER_CERT defined. For example `./configure --enable-all; make`");
         }
         return { ptr };
     }

@@ -44,7 +44,7 @@ namespace tests_cryptoTools
             if (!ec) ctx.loadCert(sample_ca_cert_pem, ec);
             if (!ec) ctx.loadKeyPair(sample_server_cert_pem, sample_server_key_pem, ec);
             if (ec)
-                throw std::runtime_error(ec.message());
+                throw osuCrypto::maybe_runtime_error(ec.message());
         }
 #endif
         return ctx;
@@ -1177,7 +1177,7 @@ namespace tests_cryptoTools
             chl1.recv(vec_u32);
 
         }
-        catch (std::runtime_error&)
+        catch (osuCrypto::maybe_runtime_error&)
         {
             throws = true;
         }
@@ -1221,7 +1221,7 @@ namespace tests_cryptoTools
             chl2.recv(vec_u32);
 
         }
-        catch (std::runtime_error&)
+        catch (osuCrypto::maybe_runtime_error&)
         {
             throws = true;
         }
@@ -1356,7 +1356,7 @@ namespace tests_cryptoTools
                         }
                         else
                         {
-                            throw std::runtime_error(LOCATION);
+                            throw osuCrypto::maybe_runtime_error(LOCATION);
                         }
                     }
                 }
@@ -1631,21 +1631,21 @@ namespace tests_cryptoTools
             SBO_ptr<Base> oo;
             oo.New<MoveOnly<4>>(ss);
             bool b = oo.isSBO();
-            if (!b) throw std::runtime_error(LOCATION);
+            if (!b) throw osuCrypto::maybe_runtime_error(LOCATION);
 
             auto s1 = oo->print();
-            if (s1 != ss) throw std::runtime_error(LOCATION);
+            if (s1 != ss) throw osuCrypto::maybe_runtime_error(LOCATION);
 
             {
                 SBO_ptr<Base> oo2;
                 oo2 = std::move(oo);
                 auto s2 = oo2->print();
-                if (s2 != ss) throw std::runtime_error(LOCATION);
+                if (s2 != ss) throw osuCrypto::maybe_runtime_error(LOCATION);
 
                 {
                     SBO_ptr<Base> oo3(std::move(oo2));
                     auto s3 = oo3->print();
-                    if (s3 != ss) throw std::runtime_error(LOCATION);
+                    if (s3 != ss) throw osuCrypto::maybe_runtime_error(LOCATION);
                 }
             }
         }
@@ -1654,23 +1654,23 @@ namespace tests_cryptoTools
             SBO_ptr<Base> oo;
             oo.New<Large>();
             bool b = oo.isSBO();
-            if (b) throw std::runtime_error(LOCATION);
+            if (b) throw osuCrypto::maybe_runtime_error(LOCATION);
 
             auto s1 = oo->print();
-            if (s1 != "Large") throw std::runtime_error(LOCATION);
+            if (s1 != "Large") throw osuCrypto::maybe_runtime_error(LOCATION);
 
             {
                 SBO_ptr<Base> oo2;
                 oo2 = std::move(oo);
 
                 auto s2 = oo2->print();
-                if (s2 != "Large") throw std::runtime_error(LOCATION);
+                if (s2 != "Large") throw osuCrypto::maybe_runtime_error(LOCATION);
 
                 {
                     SBO_ptr<Base> oo3(std::move(oo2));
                     auto s3 = oo3->print();
 
-                    if (s3 != "Large") throw std::runtime_error(LOCATION);
+                    if (s3 != "Large") throw osuCrypto::maybe_runtime_error(LOCATION);
                 }
             }
         }

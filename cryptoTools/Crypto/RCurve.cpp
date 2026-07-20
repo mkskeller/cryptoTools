@@ -97,12 +97,12 @@ namespace osuCrypto
     REccNumber& REccNumber::operator=(const bn_t c)
     {
         if(!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         bn_copy(*this, c);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic copy error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic copy error " LOCATION);
 
         return *this;
     }
@@ -110,7 +110,7 @@ namespace osuCrypto
     REccNumber& REccNumber::operator=(int i)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         if (i < 0)
         {
@@ -123,7 +123,7 @@ namespace osuCrypto
             bn_set_dig(mVal, i);
         }
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic set int error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic set int error " LOCATION);
 
         reduce();
         return *this;
@@ -145,12 +145,12 @@ namespace osuCrypto
             return *this -= -i;
 
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         bn_add_dig(*this, *this, i);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic add int error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic add int error " LOCATION);
 
         reduce();
         return *this;
@@ -161,11 +161,11 @@ namespace osuCrypto
         if (i < 0)
             return *this += -i;
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         bn_sub_dig(*this, *this, i);
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic sub int error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic sub int error " LOCATION);
 
         reduce();
         return *this;
@@ -174,12 +174,12 @@ namespace osuCrypto
     REccNumber& REccNumber::operator+=(const REccNumber& b)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         bn_add(*this, *this, b);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic add error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic add error " LOCATION);
         reduce();
         return *this;
     }
@@ -187,12 +187,12 @@ namespace osuCrypto
     REccNumber& REccNumber::operator-=(const REccNumber& b)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         bn_sub(*this, *this, b);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic sub error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic sub error " LOCATION);
         reduce();
         return *this;
     }
@@ -200,12 +200,12 @@ namespace osuCrypto
     REccNumber& REccNumber::operator*=(const REccNumber& b)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         bn_mul(*this, *this, b);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic mul error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic mul error " LOCATION);
 
         reduce();
         return *this;
@@ -216,12 +216,12 @@ namespace osuCrypto
         if (i < 0)
             return *this *= REccNumber(i);
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         bn_mul_dig(*this, *this, i);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic mul error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic mul error " LOCATION);
 
         reduce();
         return *this;
@@ -237,13 +237,13 @@ namespace osuCrypto
         if (i < 0)
             return *this /= REccNumber(i);
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccNumber iInv, y, c;
         bn_gcd_ext_dig(c, y, iInv, modulus(), i);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic div error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic div error " LOCATION);
 
         return (*this *= iInv);
     }
@@ -257,13 +257,13 @@ namespace osuCrypto
     void REccNumber::reduce()
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         //auto t = *this;
         bn_mod_basic(*this, *this, modulus());
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic mod error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic mod error " LOCATION);
 
     }
 
@@ -272,13 +272,13 @@ namespace osuCrypto
     REccNumber REccNumber::negate() const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccNumber r;
         bn_neg(r, *this);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic neg error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic neg error " LOCATION);
 
         r.reduce();
         return r;
@@ -287,14 +287,14 @@ namespace osuCrypto
     REccNumber REccNumber::inverse() const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccNumber bInv, y, c;
 
         bn_gcd_ext_basic(c, bInv, y, *this, modulus());
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic inverse error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic inverse error " LOCATION);
 
         bInv.reduce();
 
@@ -304,7 +304,7 @@ namespace osuCrypto
     bool REccNumber::operator==(const REccNumber& cmp) const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         return bn_cmp(*this, cmp) == RLC_EQ;
     }
@@ -312,7 +312,7 @@ namespace osuCrypto
     bool REccNumber::operator==(const int& cmp) const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         if (cmp < 0)
             return *this == REccNumber(cmp);
@@ -333,7 +333,7 @@ namespace osuCrypto
     bool REccNumber::operator>=(const REccNumber& cmp) const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         return  bn_cmp(*this, cmp) != RLC_LT;
     }
@@ -343,7 +343,7 @@ namespace osuCrypto
         if (cmp < 0)
             return *this >= REccNumber(cmp);
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         return bn_cmp_dig(*this, cmp) != RLC_LT;
     }
@@ -359,7 +359,7 @@ namespace osuCrypto
         if (cmp < 0)
             return *this <= REccNumber(cmp);
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         return bn_cmp_dig(*this, cmp) != RLC_GT;
     }
@@ -367,7 +367,7 @@ namespace osuCrypto
     bool REccNumber::operator>(const REccNumber& cmp) const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         return bn_cmp(*this, cmp) == RLC_GT;
     }
@@ -377,7 +377,7 @@ namespace osuCrypto
         if (cmp < 0)
             return *this > REccNumber(cmp);
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         return bn_cmp_dig(*this, cmp) == RLC_GT;
     }
@@ -392,7 +392,7 @@ namespace osuCrypto
         if (cmp < 0)
             return *this < REccNumber(cmp);
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         return bn_cmp_dig(*this, cmp) == RLC_LT;
     }
@@ -400,7 +400,7 @@ namespace osuCrypto
     bool REccNumber::isPrime() const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         return bn_is_prime(*this);
     }
@@ -408,7 +408,7 @@ namespace osuCrypto
     bool REccNumber::iszero() const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         return bn_is_zero(*this);
     }
@@ -433,13 +433,13 @@ namespace osuCrypto
         if (i < 0)
             return REccNumber(i) + v;
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccNumber r;
         bn_add_dig(r, v, i);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic add error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic add error " LOCATION);
 
         r.reduce();
         return r;
@@ -447,13 +447,13 @@ namespace osuCrypto
     REccNumber operator+(const REccNumber& i, const REccNumber& v)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccNumber r;
         bn_add(r, v, i);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic add error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic add error " LOCATION);
 
         r.reduce();
         return r;
@@ -463,13 +463,13 @@ namespace osuCrypto
         if (i < 0)
             return v - REccNumber(i);
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccNumber r;
         bn_sub_dig(r, v, i);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic sub error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic sub error " LOCATION);
 
         r.reduce();
         return r;
@@ -481,13 +481,13 @@ namespace osuCrypto
     REccNumber operator-(const REccNumber& v, const REccNumber& i)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccNumber r;
         bn_sub(r, v, i);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic sub error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic sub error " LOCATION);
 
         r.reduce();
         return r;
@@ -497,13 +497,13 @@ namespace osuCrypto
         if (i < 0)
             return v * REccNumber(i);
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccNumber r;
         bn_mul_dig(r, v, i);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic mul error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic mul error " LOCATION);
 
         r.reduce();
         return r;
@@ -515,13 +515,13 @@ namespace osuCrypto
     REccNumber operator*(const REccNumber& v, const REccNumber& i)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccNumber r;
         bn_mul(r, v, i);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic mul error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic mul error " LOCATION);
 
         r.reduce();
         return r;
@@ -544,14 +544,14 @@ namespace osuCrypto
     REccNumber operator^(const REccNumber& base, const REccNumber& exp)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccNumber r;
         bn_mxp_basic(r, base, exp, base.modulus());
 
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic exp error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic exp error " LOCATION);
 
         return r;
     }
@@ -559,7 +559,7 @@ namespace osuCrypto
     std::ostream& operator<<(std::ostream& out, const REccNumber& val)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         auto radix = 16;
         auto size = bn_size_str(val, radix);
@@ -579,7 +579,7 @@ namespace osuCrypto
     std::ostream& operator<<(std::ostream& out, const REccPoint& val)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         auto radix = 16;
 
@@ -591,11 +591,11 @@ namespace osuCrypto
             {
                 std::cout << "buff.size() " << buff.size() << std::endl;
                 std::cout << "fp_size_str " << fp_size_str(c, radix) << std::endl;
-                throw std::runtime_error(LOCATION);
+                throw osuCrypto::maybe_runtime_error(LOCATION);
             }
             fp_write_str(&buff[0], static_cast<int>(buff.size()), c, radix);
             if (GSL_UNLIKELY(err_get_code()))
-                throw std::runtime_error("Relic write error " LOCATION);
+                throw osuCrypto::maybe_runtime_error("Relic write error " LOCATION);
 
             out << buff;
         };
@@ -620,12 +620,12 @@ namespace osuCrypto
         if (i < 0)
             return v + REccNumber(i);
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccNumber r;
         bn_add_dig(r, v, i);
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic add error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic add error " LOCATION);
         r.reduce();
         return r;
     }
@@ -636,13 +636,13 @@ namespace osuCrypto
         {
             core_init();
             if (GSL_UNLIKELY(err_get_code()))
-                throw std::runtime_error("Relic core init error " LOCATION);
+                throw osuCrypto::maybe_runtime_error("Relic core init error " LOCATION);
 
             if (!curveID)
             {
                 ep_param_set_any();
                 if (GSL_UNLIKELY(err_get_code()))
-                    throw std::runtime_error("Relic set any error " LOCATION);
+                    throw osuCrypto::maybe_runtime_error("Relic set any error " LOCATION);
             }
         }
 
@@ -652,7 +652,7 @@ namespace osuCrypto
             {
                 ep_param_set(curveID);
                 if (GSL_UNLIKELY(err_get_code()))
-                    throw std::runtime_error("Relic set any error " LOCATION);
+                    throw osuCrypto::maybe_runtime_error("Relic set any error " LOCATION);
             }
         }
     }
@@ -660,13 +660,13 @@ namespace osuCrypto
     REllipticCurve::Point REllipticCurve::getGenerator() const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         Point g;
         ep_curve_get_gen(g);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic get gen error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic get gen error " LOCATION);
 
         return g;
         // TODO: insert return statement here
@@ -680,13 +680,13 @@ namespace osuCrypto
     REccNumber REllipticCurve::getOrder() const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccNumber g;
         ep_curve_get_ord(g);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic get order error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic get order error " LOCATION);
         return g;
     }
 
@@ -694,7 +694,7 @@ namespace osuCrypto
     bool REccPoint::iszero()const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         return ep_is_infty(*this);
     }
@@ -702,7 +702,7 @@ namespace osuCrypto
     REccPoint& REccPoint::operator=(const REccPoint& copy)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         ep_copy(*this, copy);
         return *this;
@@ -711,89 +711,89 @@ namespace osuCrypto
     REccPoint& REccPoint::operator+=(const REccPoint& addIn)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         ep_add(*this, *this, addIn);
 
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic ep_add error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic ep_add error " LOCATION);
         return *this;
     }
 
     REccPoint& REccPoint::operator-=(const REccPoint& subtractIn)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         ep_sub(*this, *this, subtractIn);
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic ep_sub error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic ep_sub error " LOCATION);
         return *this;
     }
 
     REccPoint& REccPoint::operator*=(const REccNumber& multIn)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         ep_mul(*this, *this, multIn);
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic ep_mul error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic ep_mul error " LOCATION);
         return *this;
     }
 
     REccPoint REccPoint::operator+(const REccPoint& addIn) const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccPoint r;
         ep_add(r, *this, addIn);
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic ep_add error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic ep_add error " LOCATION);
         return r;
     }
 
     REccPoint REccPoint::operator-(const REccPoint& subtractIn) const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccPoint r;
         ep_sub(r, *this, subtractIn);
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic ep_sub error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic ep_sub error " LOCATION);
         return r;
     }
 
     REccPoint REccPoint::operator*(const REccNumber& multIn) const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccPoint r;
         ep_mul(r, *this, multIn);
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic ep_mul error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic ep_mul error " LOCATION);
         return r;
     }
 
     REccPoint REccPoint::mulGenerator(const REccNumber& n)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         REccPoint r;
         ep_mul_gen(r, n);
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic ep_mul_gen error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic ep_mul_gen error " LOCATION);
         return r;
     }
 
     bool REccPoint::operator==(const REccPoint& cmp) const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         return ep_cmp(*this, cmp) == RLC_EQ;
     }
@@ -801,7 +801,7 @@ namespace osuCrypto
     bool REccPoint::operator!=(const REccPoint& cmp) const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         return ep_cmp(*this, cmp) != RLC_EQ;
     }
@@ -809,7 +809,7 @@ namespace osuCrypto
     void REccPoint::fromHash(const unsigned char* data, size_t len)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         ep_map(*this, data, len);
     }
@@ -817,21 +817,21 @@ namespace osuCrypto
     void REccPoint::toBytes(u8* dest) const
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         ep_write_bin(dest, static_cast<int>(sizeBytes()), *this, 1);
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic ep_write error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic ep_write error " LOCATION);
     }
 
     void REccPoint::fromBytes(u8* src)
     {
         if (!core_get())
-            throw std::runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic core not initialized on this thread. Construct a RCurve to initialize it. " LOCATION);
 
         ep_read_bin(*this, src, static_cast<int>(sizeBytes()));
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic ep_read error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic ep_read error " LOCATION);
     }
 
 
@@ -898,7 +898,7 @@ namespace osuCrypto
     {
         ep_rand(*this, prng);
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic ep_rand error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic ep_rand error " LOCATION);
     }
 
     void REccPoint::randomize(const block& seed)
@@ -910,7 +910,7 @@ namespace osuCrypto
     {
         ::ep_rand(*this);
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic ep_rand error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic ep_rand error " LOCATION);
     }
 
     u64 REccNumber::sizeDigits() const
@@ -928,14 +928,14 @@ namespace osuCrypto
     {
         bn_write_bin(dest, static_cast<int>(sizeBytes()), *this);
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic write error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic write error " LOCATION);
     }
 
     void REccNumber::fromBytes(const u8* src)
     {
         bn_read_bin(*this, src, static_cast<int>(sizeBytes()));
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic read error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic read error " LOCATION);
     }
 
     void REccNumber::fromHex(const char* src)
@@ -943,7 +943,7 @@ namespace osuCrypto
         auto len = std::strlen(src);
         bn_read_str(*this, src, static_cast<int>(len), 16);
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic read error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic read error " LOCATION);
     }
 
     void REccNumber::randomize(PRNG& prng)
@@ -952,7 +952,7 @@ namespace osuCrypto
         prng.get(buff.data(), buff.size());
         bn_read_bin(*this, buff.data(), static_cast<int>(buff.size()));
         if (GSL_UNLIKELY(err_get_code()))
-            throw std::runtime_error("Relic randomize error " LOCATION);
+            throw osuCrypto::maybe_runtime_error("Relic randomize error " LOCATION);
 
         reduce();
     }

@@ -111,14 +111,14 @@ namespace osuCrypto
         mHandle.bind(mAddress, ec);
 
         if (mAddress.port() != port)
-            throw std::runtime_error("rt error at " LOCATION);
+            throw osuCrypto::maybe_runtime_error("rt error at " LOCATION);
 
         if (ec)
         {
             return;
             //std::cout << "network address bind error: " << ec.message() << std::endl;
 
-            //throw std::runtime_error(ec.message());
+            //throw osuCrypto::maybe_runtime_error(ec.message());
         }
 
 
@@ -587,7 +587,7 @@ namespace osuCrypto
     void Acceptor::asyncGetSocket(std::shared_ptr<ChannelBase> chl)
     {
         if (stopped()) 
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
         LOG_MSG("queuing getSocket(...) Channel "
             + chl->mSession->mName + " "
             + chl->mLocalName + " "
@@ -674,7 +674,7 @@ namespace osuCrypto
                         auto s = pair.second;
                         auto location = pair.first;
                         if (s == false)
-                            throw std::runtime_error(LOCATION);
+                            throw osuCrypto::maybe_runtime_error(LOCATION);
 
                         sessionGroup->removeMapping = [&, location]() {
                             mClaimedGroups.erase(location); };
@@ -831,7 +831,7 @@ namespace osuCrypto
                     auto s = pair.second;
                     auto location = pair.first;
                     if (s == false)
-                        throw std::runtime_error(LOCATION);
+                        throw osuCrypto::maybe_runtime_error(LOCATION);
 
                     // update how to remove this session group from the list of claimed groups.
                     // Will be called when its time to remove this session.
@@ -982,7 +982,7 @@ namespace osuCrypto
 
                 acceptorIter->asyncSubscribe(session, [&](const error_code& ec) {
                     if (ec)
-                        p.set_exception(std::make_exception_ptr(std::runtime_error(ec.message())));
+                        p.set_exception(std::make_exception_ptr(osuCrypto::maybe_runtime_error(ec.message())));
                     else
                         p.set_value();
                     });
@@ -1085,7 +1085,7 @@ namespace osuCrypto
     void details::SessionGroup::merge(details::SocketGroup& merge, Acceptor* a)
     {
         if (mSockets.size())
-            throw std::runtime_error(LOCATION);
+            throw osuCrypto::maybe_runtime_error(LOCATION);
 
         auto session = mBase.lock();
         if (session)
@@ -1093,7 +1093,7 @@ namespace osuCrypto
             if (merge.mSessionID == 0 ||
                 session->mName != merge.mName ||
                 session->mSessionID)
-                throw std::runtime_error(LOCATION);
+                throw osuCrypto::maybe_runtime_error(LOCATION);
 
             session->mSessionID = merge.mSessionID;
         }

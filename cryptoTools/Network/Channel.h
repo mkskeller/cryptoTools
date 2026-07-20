@@ -369,11 +369,11 @@ namespace osuCrypto {
 
 
 
-    class SocketConnectError : public std::runtime_error
+    class SocketConnectError : public osuCrypto::maybe_runtime_error
     {
     public:
         SocketConnectError(const std::string& reason)
-            :std::runtime_error(reason)
+            :osuCrypto::maybe_runtime_error(reason)
         {}
     };
 

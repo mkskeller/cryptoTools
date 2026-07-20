@@ -345,7 +345,7 @@ namespace osuCrypto
 				return [](const BitVector& b) {
 
 					if (b.size() > 64)
-						throw std::runtime_error("not implemented. " LOCATION);
+						throw osuCrypto::maybe_runtime_error("not implemented. " LOCATION);
 					value_type v = 0;
 					for (u64 i = 0; i < b.size(); ++i)
 					{

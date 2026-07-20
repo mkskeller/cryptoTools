@@ -33,7 +33,7 @@ namespace tests_cryptoTools
             //auto zeroPoint = g * curve.getOrder();
 
             //if (zeroPoint + g != g)
-            //	throw std::runtime_error(LOCATION);
+            //	throw osuCrypto::maybe_runtime_error(LOCATION);
 
             if (one + one != 2)
             {
@@ -102,7 +102,7 @@ namespace tests_cryptoTools
 
             if (rand - rand != 0)
             {
-                throw std::runtime_error("x - x != 0 " LOCATION);
+                throw osuCrypto::maybe_runtime_error("x - x != 0 " LOCATION);
             }
 
             if (rand + rand.negate() != 0)
@@ -112,7 +112,7 @@ namespace tests_cryptoTools
                 std::cout << "x.neg()     = " << rand.negate() << std::endl;
                 std::cout << "x + x.neg() = " << rand + rand.negate() << std::endl;
 
-                throw std::runtime_error("x + x.negate() != 0 " LOCATION);
+                throw osuCrypto::maybe_runtime_error("x + x.negate() != 0 " LOCATION);
             }
         }
 
@@ -143,7 +143,7 @@ namespace tests_cryptoTools
                 std::cout << " rand " << rand << std::endl;
                 std::cout << " inv  " << inv << std::endl;
                 std::cout << " prod " << prod << std::endl;
-                throw std::runtime_error("x * x^-1 != 1 " LOCATION);
+                throw osuCrypto::maybe_runtime_error("x * x^-1 != 1 " LOCATION);
             }
 
             REccNumber a(prng);

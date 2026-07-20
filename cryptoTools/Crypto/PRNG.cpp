@@ -95,13 +95,13 @@ namespace osuCrypto {
         if(mBuffer.size())
             return mAes.mRoundKey[0];
 
-        throw std::runtime_error("PRNG has not been keyed " LOCATION);
+        throw osuCrypto::maybe_runtime_error("PRNG has not been keyed " LOCATION);
     }
 
     void PRNG::refillBuffer()
     {
         if (mBuffer.size() == 0)
-            throw std::runtime_error("PRNG has not been keyed " LOCATION);
+            throw osuCrypto::maybe_runtime_error("PRNG has not been keyed " LOCATION);
 
         mAes.ecbEncCounterMode(mBlockIdx, mBuffer.size(), mBuffer.data());
         mBlockIdx += mBuffer.size();

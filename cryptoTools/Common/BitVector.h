@@ -163,7 +163,7 @@ namespace osuCrypto {
 
             if (size == ~0ull) size = mNumBits - begin;
             if (begin + size > mNumBits) 
-                throw std::runtime_error("rt error at " LOCATION);
+                throw osuCrypto::maybe_runtime_error("rt error at " LOCATION);
             BitVector ret;
             ret.append(data() + (begin / 8), size, begin % 8);
 			return ret;
@@ -193,7 +193,7 @@ namespace osuCrypto {
 
     inline BitReference BitVector::operator[](const u64 idx) const
     {
-        if (idx >= mNumBits) throw std::runtime_error("rt error at " LOCATION);
+        if (idx >= mNumBits) throw osuCrypto::maybe_runtime_error("rt error at " LOCATION);
         return BitReference(data() + (idx / 8), static_cast<u8>(idx % 8));
     }
 

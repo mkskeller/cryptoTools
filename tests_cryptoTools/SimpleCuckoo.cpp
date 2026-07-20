@@ -28,10 +28,10 @@
 //    bool SimpleCuckoo::operator==(const SimpleCuckoo & cmp) const
 //    {
 //        if (mBins.size() != cmp.mBins.size())
-//            throw std::runtime_error("");
+//            throw osuCrypto::maybe_runtime_error("");
 //
 //        if (mStash.size() != cmp.mStash.size())
-//            throw std::runtime_error("");
+//            throw osuCrypto::maybe_runtime_error("");
 //
 //
 //
@@ -127,7 +127,7 @@
 //
 //#ifndef  NDEBUG
 //        if (hashs.bounds()[1] != width)
-//            throw std::runtime_error("" LOCATION);
+//            throw osuCrypto::maybe_runtime_error("" LOCATION);
 //#endif // ! NDEBUG
 //
 //

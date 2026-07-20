@@ -7,6 +7,8 @@
 #include <exception>
 #include <stdexcept>
 
+#include "Defines.h"
+
 namespace osuCrypto
 {
 
@@ -43,7 +45,7 @@ namespace osuCrypto
             }
             if (mLocking)
                 mMtx.unlock();
-			throw std::runtime_error("Timer: " + msg + " not found.");
+			throw osuCrypto::maybe_runtime_error("Timer: " + msg + " not found.");
 
         }
 
@@ -66,7 +68,7 @@ namespace osuCrypto
             if (mTimer)
                 return *mTimer;
 
-            throw std::runtime_error("Timer net set. ");
+            throw osuCrypto::maybe_runtime_error("Timer net set. ");
         }
 
         Timer::timeUnit setTimePoint(const std::string& msg)

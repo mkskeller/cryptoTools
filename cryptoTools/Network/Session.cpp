@@ -51,12 +51,12 @@ namespace osuCrypto {
     void Session::start(IOService& ioService, std::string ip, u64 port, SessionMode type, TLSContext& tls, std::string name)
     {
         if (mBase && mBase->mStopped == false)
-            throw std::runtime_error("rt error at " LOCATION);
+            throw osuCrypto::maybe_runtime_error("rt error at " LOCATION);
 #ifdef ENABLE_WOLFSSL
         if (tls && 
             (tls.mode() != WolfContext::Mode::Both) &&
             (tls.mode() == WolfContext::Mode::Server) != (type == SessionMode::Server))
-            throw std::runtime_error("TLS context isServer does not match SessionMode");
+            throw osuCrypto::maybe_runtime_error("TLS context isServer does not match SessionMode");
 #endif
 
 
@@ -141,7 +141,7 @@ namespace osuCrypto {
 		if (mBase)
 			return mBase->mName;
 		else
-			throw std::runtime_error(LOCATION);
+			throw osuCrypto::maybe_runtime_error(LOCATION);
 	}
 
 	u64 Session::getSessionID() const
@@ -149,25 +149,25 @@ namespace osuCrypto {
 		if (mBase)
 			return mBase->mSessionID;
 		else
-			throw std::runtime_error(LOCATION);
+			throw osuCrypto::maybe_runtime_error(LOCATION);
 	}
 
 	IOService & Session::getIOService() {
 		if (mBase)
 			return *mBase->mIOService;
 		else
-			throw std::runtime_error(LOCATION);
+			throw osuCrypto::maybe_runtime_error(LOCATION);
 	}
 
 
 	Channel Session::addChannel(std::string localName, std::string remoteName)
 	{
         if (mBase == nullptr)
-            throw std::runtime_error("Session is not initialized");
+            throw osuCrypto::maybe_runtime_error("Session is not initialized");
 
 		// if the user does not provide a local name, use the following.
 		if (localName == "") {
-			if (remoteName != "") throw std::runtime_error("remote name must be empty is local name is empty. " LOCATION);
+			if (remoteName != "") throw osuCrypto::maybe_runtime_error("remote name must be empty is local name is empty. " LOCATION);
 
 			std::lock_guard<std::mutex> lock(mBase->mAddChannelMtx);
 			localName = "_autoName_" + std::to_string(mBase->mAnonymousChannelIdx++);
@@ -177,7 +177,7 @@ namespace osuCrypto {
 		// make the remote name match the local name if empty
 		if (remoteName == "") remoteName = localName;
 
-		if (mBase->mStopped == true) throw std::runtime_error("rt error at " LOCATION);
+		if (mBase->mStopped == true) throw osuCrypto::maybe_runtime_error("rt error at " LOCATION);
 
 
 		// construct the basic channel. Has no socket.

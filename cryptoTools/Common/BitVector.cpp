@@ -68,7 +68,7 @@ namespace osuCrypto {
 
 	void BitVector::append(const BitVector& k, u64 length, u64 offset) {
 		if (k.size() < length + offset)
-			throw std::runtime_error("length too long. " LOCATION);
+			throw osuCrypto::maybe_runtime_error("length too long. " LOCATION);
 
 		append(k.data(), length, offset);
 	}
@@ -157,7 +157,7 @@ namespace osuCrypto {
 
 	void BitVector::operator&=(const BitVector& A)
 	{
-		if (mNumBits != A.mNumBits) throw std::runtime_error("rt error at " LOCATION);
+		if (mNumBits != A.mNumBits) throw osuCrypto::maybe_runtime_error("rt error at " LOCATION);
 		for (u64 i = 0; i < sizeBlocks(); i++)
 		{
 			mData[i] &= A.mData[i];
@@ -166,7 +166,7 @@ namespace osuCrypto {
 
 	void BitVector::operator|=(const BitVector& A)
 	{
-		if (mNumBits != A.mNumBits) throw std::runtime_error("rt error at " LOCATION);
+		if (mNumBits != A.mNumBits) throw osuCrypto::maybe_runtime_error("rt error at " LOCATION);
 		for (u64 i = 0; i < sizeBlocks(); i++)
 		{
 			mData[i] |= A.mData[i];
@@ -175,7 +175,7 @@ namespace osuCrypto {
 
 	void BitVector::operator^=(const BitVector& A)
 	{
-		if (mNumBits != A.mNumBits) throw std::runtime_error("rt error at " LOCATION);
+		if (mNumBits != A.mNumBits) throw osuCrypto::maybe_runtime_error("rt error at " LOCATION);
 		for (u64 i = 0; i < sizeBlocks(); i++)
 		{
 			mData[i] ^= A.mData[i];
@@ -188,7 +188,7 @@ namespace osuCrypto {
 		for (u64 i = 0; i < size(); ++i)
 		{
 #ifndef NDEBUG
-			if (u8(data[i] - '0') > 1) throw std::runtime_error("");
+			if (u8(data[i] - '0') > 1) throw osuCrypto::maybe_runtime_error("");
 #endif
 
 			(*this)[i] = data[i] - '0';

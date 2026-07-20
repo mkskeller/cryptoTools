@@ -20,7 +20,13 @@
 #define STRINGIZE_DETAIL(x) #x
 #define STRINGIZE(x) STRINGIZE_DETAIL(x)
 #define LOCATION __FILE__ ":" STRINGIZE(__LINE__)
-#define RTE_LOC std::runtime_error(LOCATION)
+
+namespace osuCrypto
+{
+std::runtime_error maybe_runtime_error(const std::string& error);
+};
+
+#define RTE_LOC osuCrypto::maybe_runtime_error(LOCATION)
 
 
 #ifdef _MSC_VER

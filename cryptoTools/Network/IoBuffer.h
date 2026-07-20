@@ -170,7 +170,7 @@ namespace osuCrypto
 
         void resize(u64 size)
         {
-            if (size > mMaxReceiveSize) throw std::runtime_error(LOCATION);
+            if (size > mMaxReceiveSize) throw osuCrypto::maybe_runtime_error(LOCATION);
             mTrueReceiveSize = size;
         }
 
@@ -183,14 +183,14 @@ namespace osuCrypto
     static_assert(is_container<ReceiveAtMost<u8>>::value, "sss");
     static_assert(has_resize<ReceiveAtMost<u8>, void(typename ReceiveAtMost<u8>::size_type)>::value, "sss");
 
-    class BadReceiveBufferSize : public std::runtime_error
+    class BadReceiveBufferSize : public osuCrypto::maybe_runtime_error
     {
     public:
         u64 mSize;
         
         BadReceiveBufferSize(const std::string& what, u64 length)
             :
-            std::runtime_error(what),
+            osuCrypto::maybe_runtime_error(what),
             mSize(length)
         { }
 
@@ -198,18 +198,18 @@ namespace osuCrypto
         BadReceiveBufferSize(BadReceiveBufferSize&& src) = default;
     };
 
-    class CanceledOperation : public std::runtime_error
+    class CanceledOperation : public osuCrypto::maybe_runtime_error
     {
     public:
         CanceledOperation(const std::string& str)
-            : std::runtime_error(str)
+            : osuCrypto::maybe_runtime_error(str)
         {}
     };
 
-    struct NetworkException : public std::runtime_error
+    struct NetworkException : public osuCrypto::maybe_runtime_error
     {
         NetworkException(const std::string& what)
-            : std::runtime_error(what)
+            : osuCrypto::maybe_runtime_error(what)
         {}
 	};
 
@@ -481,7 +481,7 @@ namespace osuCrypto
 
             void asyncCancel(ChannelBase* base, const error_code& ec, io_completion_handle&& completionHandle) override
             {
-                mPromise.set_exception(std::make_exception_ptr(std::runtime_error(ec.message())));
+                mPromise.set_exception(std::make_exception_ptr(osuCrypto::maybe_runtime_error(ec.message())));
                 completionHandle(ec, 0);
             }
             

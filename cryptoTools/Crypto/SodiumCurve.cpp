@@ -80,7 +80,7 @@ Ed25519 operator*(const Prime25519& a, const Ed25519& b)
 {
     Ed25519 prod;
     if (crypto_scalarmult_ed25519_noclamp(prod.data, a.data, b.data) < 0)
-        throw std::runtime_error(LOCATION);
+        throw osuCrypto::maybe_runtime_error(LOCATION);
     return prod;
 }
 
@@ -88,7 +88,7 @@ Ed25519 Ed25519::mulGenerator(const Prime25519& n)
 {
     Ed25519 prod;
     if (crypto_scalarmult_ed25519_base_noclamp(prod.data, n.data) < 0)
-        throw std::runtime_error(LOCATION);
+        throw osuCrypto::maybe_runtime_error(LOCATION);
     return prod;
 }
 
@@ -115,7 +115,7 @@ Rist25519 operator*(const Prime25519& a, const Rist25519& b)
 {
     Rist25519 prod;
     if (crypto_scalarmult_ristretto255(prod.data, a.data, b.data) < 0)
-        throw std::runtime_error(LOCATION);
+        throw osuCrypto::maybe_runtime_error(LOCATION);
     return prod;
 }
 
@@ -123,7 +123,7 @@ Rist25519 Rist25519::mulGenerator(const Prime25519& n)
 {
     Rist25519 prod;
     if (crypto_scalarmult_ristretto255_base(prod.data, n.data) < 0)
-        throw std::runtime_error(LOCATION);
+        throw osuCrypto::maybe_runtime_error(LOCATION);
     return prod;
 }
 
@@ -178,7 +178,7 @@ Monty25519 operator*(const Scalar25519& a, const Monty25519& b)
     Monty25519 prod;
     
     if (crypto_scalarmult_noclamp(prod.data, a.data, b.data) < 0)
-        throw std::runtime_error(LOCATION);
+        throw osuCrypto::maybe_runtime_error(LOCATION);
     return prod;
 }
 
@@ -186,7 +186,7 @@ Monty25519 Monty25519::mulGenerator(const Scalar25519& n)
 {
     Monty25519 prod;
     if (crypto_scalarmult_base_noclamp(prod.data, n.data) < 0)
-        throw std::runtime_error(LOCATION);
+        throw osuCrypto::maybe_runtime_error(LOCATION);
     return prod;
 }
 

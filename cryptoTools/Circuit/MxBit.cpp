@@ -64,7 +64,7 @@ namespace osuCrypto
 					case osuCrypto::Mx::OpType::Or:
 						return constValue() || b.constValue();
 					default:
-						throw std::runtime_error("Bit::addGate(...) for OpType that is not implemented. " LOCATION);
+						throw osuCrypto::maybe_runtime_error("Bit::addGate(...) for OpType that is not implemented. " LOCATION);
 					}
 				}
 				else
@@ -82,7 +82,7 @@ namespace osuCrypto
 					case osuCrypto::Mx::OpType::Or:
 						return c ? 1 : w;
 					default:
-						throw std::runtime_error("Bit::addGate(...) for OpType that is not implemented. " LOCATION);
+						throw osuCrypto::maybe_runtime_error("Bit::addGate(...) for OpType that is not implemented. " LOCATION);
 					}
 				}
 			}
