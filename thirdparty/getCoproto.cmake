@@ -7,7 +7,7 @@ set(GIT_REPOSITORY      "https://github.com/mkskeller/coproto.git")
 if(DEFINED COPROTO_GIT_TAG)
     set(GIT_TAG              ${COPROTO_GIT_TAG})
 else()
-    set(GIT_TAG             "a5b10fa2e39c4f4bc534a57f98ff873d5bb33c1e" )
+    set(GIT_TAG             "ded64cbc51c041ee534e5c34a5a81135af455ce7" )
 endif()
 
 set(CLONE_DIR "${OC_THIRDPARTY_CLONE_DIR}/coproto")
@@ -88,4 +88,3 @@ SET(COPROTO_THIRDPARTY_CLONE_DIR ${OC_THIRDPARTY_CLONE_DIR} )
 SET(COPROTO_STAGE ${OC_THIRDPARTY_INSTALL_PREFIX} )
 
 add_subdirectory(${CLONE_DIR} ${CMAKE_BINARY_DIR}/coproto)
-
