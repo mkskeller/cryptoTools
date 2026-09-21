@@ -52,7 +52,6 @@ namespace osuCrypto
 #endif
 
 		OC_CUDA_CALLABLE block() = default;
-		OC_CUDA_CALLABLE block(const block&) = default;
 #ifdef OC_ENABLE_SSE2
 		block(uint64_t x1, uint64_t x0)
 		{
