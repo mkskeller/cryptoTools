@@ -20,11 +20,21 @@ target_include_directories(cryptoTools PUBLIC
 if(MSVC)
     if(ENABLE_ASAN)
         message("Warning: ASAN is enabled for cryptoTools")
-        target_compile_options(cryptoTools PUBLIC "/fsanitize=address")
+        target_compile_options(cryptoTools PUBLIC $<$<COMPILE_LANGUAGE:CXX>:/fsanitize=address>)
     endif()
 
     target_compile_options(cryptoTools PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/std:c++${CRYPTO_TOOLS_STD_VER}>)
     
+    if(ENABLE_AVX512)
+        target_compile_options(cryptoTools PUBLIC $<$<COMPILE_LANGUAGE:CXX>:/arch:AVX512>)
+    elseif(ENABLE_AVX2)
+        target_compile_options(cryptoTools PUBLIC $<$<COMPILE_LANGUAGE:CXX>:/arch:AVX2>)
+    elseif(ENABLE_AVX)
+        target_compile_options(cryptoTools PUBLIC $<$<COMPILE_LANGUAGE:CXX>:/arch:AVX>)
+    elseif(ENABLE_SSE)
+        target_compile_options(cryptoTools PUBLIC $<$<COMPILE_LANGUAGE:CXX>:/arch:SSE2>)
+    endif()
+
 else()
     target_compile_options(cryptoTools PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++${CRYPTO_TOOLS_STD_VER}> -pthread)
 
@@ -32,19 +42,29 @@ else()
 
 
     if(ENABLE_SSE)
-        target_compile_options(cryptoTools PUBLIC -maes -msse2 -msse3 -mssse3 -msse4.1 -mpclmul)
+        target_compile_options(cryptoTools PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-maes -msse2 -msse3 -mssse3 -msse4.1 -mpclmul>)
     endif()
     if(ENABLE_AVX)
-        target_compile_options(cryptoTools PUBLIC -mavx2)
+        target_compile_options(cryptoTools PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-mavx>)
     endif()
+    if(ENABLE_AVX2)
+        target_compile_options(cryptoTools PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-mavx2>)
+    endif()
+    if(ENABLE_AVX512)
+        target_compile_options(cryptoTools PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-mavx512f -mavx512vl -mavx512bw -mavx512dq>)
+    endif()
+    if(ENABLE_BMI2)
+        target_compile_options(cryptoTools PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-mbmi2>)
+    endif()
+
     if(ENABLE_ARM_AES)
         if(NOT DEFINED ARM_ARCHITECTURE)
             set(ARM_ARCHITECTURE native)
         endif()
-        target_compile_options(cryptoTools PUBLIC -march=${ARM_ARCHITECTURE}+crypto)
+        target_compile_options(cryptoTools PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-march=${ARM_ARCHITECTURE}+crypto>)
     endif()
     if(ENABLE_PIC)
-        target_compile_options(cryptoTools PUBLIC -fPIC)
+        target_compile_options(cryptoTools PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-fPIC>)
     endif()
 
     
@@ -91,7 +111,7 @@ endif (ENABLE_SODIUM)
 ###########################################################################
 
 if (ENABLE_COPROTO)
-  target_link_libraries(cryptoTools coproto)
+  target_link_libraries(cryptoTools coproto::coproto)
 endif (ENABLE_COPROTO)
 
 

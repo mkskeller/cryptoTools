@@ -41,6 +41,17 @@
 // enable the use of intel AVX instructions.
 #cmakedefine ENABLE_AVX @ENABLE_AVX@
 
+// enable the use of intel AVX2 instructions.
+#cmakedefine ENABLE_AVX2 @ENABLE_AVX2@
+
+// enable the use of intel AVX512 instructions.
+#cmakedefine ENABLE_AVX512 @ENABLE_AVX512@
+
+// enable the use of intel BMI2 instructions.
+#cmakedefine ENABLE_BMI2 @ENABLE_BMI2@
+
+
+
 // enable the use of the portable AES implementation.
 #cmakedefine ENABLE_PORTABLE_AES @ENABLE_PORTABLE_AES@
 
@@ -95,4 +106,40 @@
 #define ENABLE_AVX_FOR_REAL
 #define LIBDIVIDE_AVX2
 #endif
+#endif
+
+
+
+#ifdef __CUDACC__
+    #define OC_CUDA_CALLABLE __host__ __device__
+    #define OC_CUDA_DEVICE __device__
+    #define OC_CUDA_HOST __host__ 
+    
+    #ifdef OC_ENABLE_PCLMUL
+        #undef OC_ENABLE_PCLMUL
+    #endif
+    #ifdef OC_ENABLE_SSE2
+        #undef OC_ENABLE_SSE2
+    #endif
+    
+    #ifdef ENABLE_SSE
+        #undef ENABLE_SSE
+    #endif
+    #ifdef OC_ENABLE_SSE
+        #undef OC_ENABLE_SSE
+    #endif
+    #ifdef ENABLE_AVX
+        #undef ENABLE_AVX
+    #endif
+    #ifdef ENABLE_ARM_AES
+        #undef ENABLE_ARM_AES
+    #endif
+    #if !defined(ENABLE_PORTABLE_AES)
+        #define ENABLE_PORTABLE_AES 
+    #endif
+#else
+    #define OC_CUDA_CALLABLE
+    #define OC_CUDA_DEVICE
+    #define OC_CUDA_HOST
+
 #endif
