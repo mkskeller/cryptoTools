@@ -58,7 +58,7 @@ namespace osuCrypto
     //    doMod32(vals, divider, modVal);
     //}
 
-#ifndef ENABLE_SSE
+#ifndef ENABLE_AVX
 
 
     // https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm_cmpgt_epi64&ig_expand=1038

@@ -2,10 +2,13 @@
 
 #ifdef OC_ENABLE_AESNI
 #include <array>
+
+#ifdef __x86_64__
 #include <emmintrin.h>
 #include <smmintrin.h>
 #include <tmmintrin.h>
 #include <wmmintrin.h>
+#endif
 
 
 namespace osuCrypto {

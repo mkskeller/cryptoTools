@@ -9,6 +9,7 @@
 #include <variant>
 #include "cryptoTools/Circuit/BetaCircuit.h"
 #include<numeric>
+#include<algorithm>
 namespace osuCrypto
 {
 	namespace Mx
@@ -281,6 +282,7 @@ namespace osuCrypto
 #ifndef NDEBUG
 				auto addr = b.mAddress.gate();
 				auto off = b.mAddress.offset();
+				(void) addr, (void) off;
 				assert(addr < mGates.size() &&
 					off < mGates[addr].mNumOutputs);
 #endif // !NDEBUG

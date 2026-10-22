@@ -39,6 +39,9 @@ if("${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
 endif()
 
 
+include_directories(thirdparty)
+
+
 #############################################
 #       cryptoTools, tests, frontend        #
 #############################################
