@@ -43,6 +43,8 @@ namespace
     template<typename Operation>
     double elapsedNanoseconds(u64 iterations, Operation& operation)
     {
+        (void) comparedOperationCount;
+
         const auto begin = std::chrono::steady_clock::now();
         for (u64 i = 0; i != iterations; ++i)
             operation();
